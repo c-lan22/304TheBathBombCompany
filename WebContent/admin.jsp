@@ -72,7 +72,49 @@ Statement stmt = con.createStatement(); )
 catch (SQLException ex) {
         out.println(ex);
 }
+%>
+<h2>Change Inventory</h2>
+<form method="post" action="admin.jsp">
+<p>Product Id</p>
+<input type="number" name="productIdInv" size="5">
+<p>Warehouse Id</p>
+<input type="number" name="warehouseId" size="5">
+<p>New Quantity</p>
+<input type="number" name="quantity" size="5">
+<p>Submit Inventory Change</p>
+<input type="submit" value="Submit">
+</form>
+<%
+//edit inventory
+String prodIdInv = request.getParameter("productIdInv");
+String warehouseId = request.getParameter("warehouseId");
+String quantity = request.getParameter("quantity");
 
+try 
+(Connection con=DriverManager.getConnection(url, uid, pw);
+Statement stmt = con.createStatement(); )
+{
+	if(!prodIdInv.equals(null)&&!quantity.equals(null)&&!warehouseId.equals(null)){	
+		String sql = "Update productinventory SET quantity = ? WHERE productid = ? AND warehouseId = ? ";
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, quantity);
+		pstmt.setString(2, prodIdInv);
+		pstmt.setString(3, warehouseId);
+		pstmt.executeUpdate();
+		out.print("<p>Updated product "+prodIdInv+" in warehouse "+warehouseId+" to "+quantity+" units</p>");
+	}
+
+} 
+catch (SQLException ex) {
+		out.println(ex);
+}
+catch (NullPointerException ex) {
+
+}
+
+
+%>
+<%
 //display inventory
 out.println("<h1>Item inventory by store/warehouse</h1>");
 out.print("<table border=\"1\"><tr><th>Item Number</th><th>Warehouse 1</th>");
@@ -88,16 +130,16 @@ Statement stmt = con.createStatement(); )
                 out.print("<td>"+rst.getInt(2)+"</td></tr>");	
         }
                 
-        rst.close();
+        
 } 
 catch (SQLException ex) {
         out.println(ex);
 }
 out.println("</table>");
 
-
-
 %>
+
+
         </div>
 </body>
 </html>
