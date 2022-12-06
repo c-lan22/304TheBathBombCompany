@@ -66,10 +66,34 @@ Statement stmt = con.createStatement(); )
         String prodName = request.getParameter("productName");
         String prodPrice = request.getParameter("productPrice");
         out.println("<h2>" +prodId +" " +prodName +" " +prodPrice +"</h2>");
+
+        
 } 
 catch (SQLException ex) {
         out.println(ex);
 }
+
+//display inventory
+out.println("<h1>Item inventory by store/warehouse</h1>");
+out.print("<table border=\"1\"><tr><th>Item Number</th><th>Warehouse 1</th>");
+try 
+(Connection con=DriverManager.getConnection(url, uid, pw);
+Statement stmt = con.createStatement(); )
+{
+        String sql = "SELECT productid, quantity FROM productinventory ";
+        PreparedStatement pstmt = con.prepareStatement(sql);
+        ResultSet rst = pstmt.executeQuery();
+        while(rst.next()){
+                out.print("<tr><td>"+rst.getInt(1)+"</td>");
+                out.print("<td>"+rst.getInt(2)+"</td></tr>");	
+        }
+                
+        rst.close();
+} 
+catch (SQLException ex) {
+        out.println(ex);
+}
+out.println("</table>");
 
 
 
