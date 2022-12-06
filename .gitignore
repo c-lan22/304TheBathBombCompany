@@ -1,3 +1,4 @@
 .project
 docker-compose.yml
 Dockerfile
+.settings
