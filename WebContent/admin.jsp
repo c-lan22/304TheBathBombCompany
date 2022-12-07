@@ -220,6 +220,11 @@ Statement stmt = con.createStatement(); )
                 pstmt8.setInt(2, id);
                 pstmt8.execute();
                 out.println("<p>Warehouse Successfully Updated</p>");
+
+                String sql10 = "DELETE FROM warehouse WHERE warehouseId = ?";
+                PreparedStatement pstmt10 = con.prepareStatement(sql10);
+                pstmt10.setInt(1, id);
+                pstmt10.execute();
         }
         catch(Exception e)
         {
@@ -360,6 +365,11 @@ Statement stmt = con.createStatement(); )
                 pstmt9.setInt(12, id);
                 pstmt9.execute();
                 out.println("<p>Customer Successfully Updated</p>");
+
+                String sql11 = "DELETE FROM customer WHERE customerId = ?";
+                PreparedStatement pstmt11 = con.prepareStatement(sql11);
+                pstmt11.setInt(1, id);
+                pstmt11.execute();
         }
         catch(Exception e)
         {
