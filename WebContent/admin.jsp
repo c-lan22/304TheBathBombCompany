@@ -55,7 +55,6 @@ Statement stmt = con.createStatement(); )
         <input type="text" name="productName" size="25">
         <p>Product Price</p>
         <input type="text" name="productPrice" size="25">
-        <p>Submit Product</p>
         <input type="submit" value="Submit">
         </form>
         
@@ -110,11 +109,44 @@ Statement stmt = con.createStatement(); )
 
         %>
 
+        <h2>Update Product by Id</h2>
+        <form method="get" action="admin.jsp">
+        <p>Product Id</p>
+        <input type="number" name="productId" size="25">
+        <p>New Product Name</p>
+        <input type="text" name="productName" size="25">
+        <p>New Product Price</p>
+        <input type="text" name="productPrice" size="25">
+        <input type="submit" value="Update">
+        </form>
+		
+        <%
+        String pId = request.getParameter("productId");
+        String pName = request.getParameter("productName");
+        String pPrice = request.getParameter("productPrice");
+        
+        try
+        {
+                int id = Integer.parseInt(pId);
+                pPrice = Double.toString((double)Math.round(Double.parseDouble(pPrice) * 100) / 100);
+                String sql4 =  "UPDATE product SET productName = ?, productPrice = ? WHERE productId = ?";
+                PreparedStatement pstmt4 = con.prepareStatement(sql4);
+                pstmt4.setString(1, pName);
+                pstmt4.setString(2, pPrice);
+                pstmt4.setInt(3, id);
+                pstmt4.execute();
+                out.println("<p>Product Successfully Updated</p>");
+        }
+        catch(Exception e)
+        {
+                out.println("<p>Please enter valid information</p>");
+        }
+        %>
+
         <h2>Delete Product by Id</h2>
         <form method="get" action="admin.jsp">
         <p>Product Id</p>
-        <input type="text" name="productId" size="25">
-        <p>Submit Product</p>
+        <input type="number" name="productId" size="25">
         <input type="submit" value="Delete">
         </form>
 		
@@ -124,15 +156,15 @@ Statement stmt = con.createStatement(); )
         try
         {
                 int id = Integer.parseInt(prodId);
-                String sql4 = "DELETE FROM product WHERE productId = ?";
-                PreparedStatement pstmt4 = con.prepareStatement(sql4);
-                pstmt4.setInt(1, id);
-                pstmt4.execute();
+                String sql5 = "DELETE FROM product WHERE productId = ?";
+                PreparedStatement pstmt5 = con.prepareStatement(sql5);
+                pstmt5.setInt(1, id);
+                pstmt5.execute();
                 out.println("<p>Product Successfully Deleted</p>");
         }
         catch(Exception e)
         {
-                out.println("<p>Please enter a valid Product Id</p>");
+                out.println("<p>Please enter valid information</p>");
         }
         
         

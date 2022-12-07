@@ -5,6 +5,7 @@
     <li><a href="listprod.jsp">List Products</a></li>
     <li><a href="showcart.jsp">Show Cart</a></li>
     <li><a href="checkout.jsp">Checkout</a></li>
+    <li><a href="oftheweek.jsp">Bath Bomb Of the Week</a></li>
     <% 
     String userName1 = (String) session.getAttribute("authenticatedUser");
     try{
@@ -18,6 +19,7 @@
         }
     }catch(NullPointerException e){
         out.println("<li class=\"split\"><a href=\"login.jsp\">Login</a></li>");
+        out.println("<li class=\"split\"><a href=\"makeAccount.jsp\">Create Account</a></li>");
     }
     %>
     

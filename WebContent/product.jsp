@@ -64,15 +64,70 @@ Statement stmt = con.createStatement(); )
         /* 
         * the start of the reviews
         */
-        out.print(" <h2>Add my Review:</h2> <textarea id=\"review\" name=\"review\" rows=\"4\" cols=\"50\"> </textarea> ");
-       
-       
-       
-       
-        out.println("<h3><a href=\"listprod.jsp?id= \">Continue Shopping</a></h3>");
-
+  
     }
-    rst1.close();
+    
+    
+    
+    /* 
+    * Add the review
+    *
+    */
+    try {
+    String reviewComment = request.getParameter("reviewComment");
+    int rating = Integer.parseInt(request.getParameter("rating"));
+        if(reviewComment.equals(null)){
+            String sql2 = "INSERT INTO review (reviewRating, reviewDate, customerId, productId, reviewComment) VALUES (?,?,?,?,?)";
+            PreparedStatement pstmt2 = con.prepareStatement(sql2);
+            pstmt2.setInt(1, rating);
+            pstmt2.setString(2, null); //needs
+            pstmt2.setInt(3, 1);    //needs
+            pstmt2.setString(4, productId);
+            pstmt2.setString(5, reviewComment);
+            pstmt2.executeUpdate();
+            out.print("<p>created review </p>");
+        }
+    } catch (NullPointerException e) {} catch (NumberFormatException w) {}
+        
+    /* 
+    * query the reviews and print 
+    */
+    try {
+        
+        String sql43 = "SELECT * FROM review WHERE productId = ?";
+        PreparedStatement pstmt43 = con.prepareStatement(sql43);
+        pstmt43.setString(1, productId);
+        ResultSet rst43 = pstmt43.executeQuery();
+        out.print("<h2>Reviews By Customers:</h2>");
+        while(rst43.next()){
+            String reviewId     = rst43.getString(1);
+            String reviewRating = rst43.getString(2);
+            String reviewDate   = rst43.getString(3);
+            String customerId   = rst43.getString(4);
+            String productId23    = rst43.getString(5);
+            String reviewComment1 = rst43.getString(6);
+            //Date:"+reviewDate+"
+            out.print("<h3>Customer Id: "+customerId+" Review Rating: "+reviewRating+"</h3>");
+            out.print("<textarea readonly rows=\"4\" cols=\"50\">"+reviewComment1+"</textarea>");
+            
+        }  
+    } catch (NullPointerException e) {} catch (NumberFormatException w) {}
+    
+    /* 
+    * print add my review
+    */
+    out.print(" <h2>Add my Review:</h2> "
+    +"<form method=\"post\" action=\"product.jsp\">"
+    +"<p>Rating</p><input type=\"number\" name=\"rating\" size=\"1\" min=\"1\" max=\"5\">"
+    +"<p>Comment</p><textarea id=\"review\" name=\"reviewComment\" rows=\"4\" cols=\"50\"> </textarea>" 
+    +"<input hidden type=\"number\" name=\"id\"value=\""+productId+"\">"
+    +"<p>Submit Review</p><p><input type=\"submit\" value=\"Submit\"></p>"
+    +"</form");
+    
+    
+          
+    out.println("<h3><a href=\"listprod.jsp?id= \">Continue Shopping</a></h3>");    
+    
 }
 catch (SQLException ex)
 {
