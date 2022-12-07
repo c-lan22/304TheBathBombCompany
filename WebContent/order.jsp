@@ -29,6 +29,7 @@ HashMap<String, ArrayList<Object>> productList = (HashMap<String, ArrayList<Obje
 String url = "jdbc:sqlserver://cosc304_sqlserver:1433;DatabaseName=orders;TrustServerCertificate=True";
 String uid = "sa";
 String pw = "304#sa#pw";
+int orderId34 = 0;
 try 
 (Connection con=DriverManager.getConnection(url, uid, pw);
 Statement stmt = con.createStatement(); )
@@ -115,7 +116,7 @@ Statement stmt = con.createStatement(); )
 						ResultSet keys = pstmt2.getGeneratedKeys();
 						keys.next();
 						int orderId = keys.getInt(1);
-    
+                        orderId34 = orderId;
     
                     out.println("<h1>Order completed. Will be shipped soon...</h1>");
                     out.println("<h1>Your order reference number is: "+orderId+" </h1>");
@@ -160,6 +161,7 @@ Statement stmt = con.createStatement(); )
                     out.println("<h1>Shipping to customer: "+custIdInt+" Name:"+rst1.getString(2)+" "+rst1.getString(3)+" </h1>");
                     // Clear cart if order placed successfully
                     session.setAttribute("productList", null);
+                    
 
                 }
 			}
@@ -168,9 +170,9 @@ Statement stmt = con.createStatement(); )
         out.println("<h1>Customer ID is not a number<h1>");
     }
 }
-
-
-
+%>
+<h2><a href=\shop\ship.jsp?orderId=<%= orderId34 %>>Ship Order <%= orderId34 %></a></h2>
+<%
 
 
 /*
