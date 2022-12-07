@@ -38,7 +38,7 @@
 		String retStr = null;
 		boolean isAccount = false;
 
-		if(username == null || password == null || firstname == null || lastname == null ||email == null || phonenumber == null || address == null ||city == null || state == null ||postalcode == null || country == null) //change to eunsure everything is filled in
+		if(username.equals(null) || password.equals(null) || firstname.equals(null) || lastname.equals(null) ||email.equals(null) || phonenumber.equals(null) || address.equals(null) ||city.equals(null) || state.equals(null) ||postalcode.equals(null) || country.equals(null)) //change to eunsure everything is filled in
 				return null;
 		if((username.length() == 0) || (password.length() == 0))
 				return null;
@@ -70,7 +70,7 @@
 			}
 
 			if(makeAcc == true){
-				String sql2 = "INSERT INTO customer VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				String sql2 = "INSERT INTO customer(firstname,lastname, email, phonenumber, address, city, state, postalcode, country, username, password) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 				PreparedStatement pstmt2 = con.prepareStatement(sql2);
 				pstmt.setString(1, firstname);
 				pstmt.setString(2, lastname);
@@ -97,8 +97,8 @@
 			out.println(ex);
 		}
 		
-		if(retStr != null)
-		{	session.removeAttribute("loginMessage");
+		if(retStr != null){	
+			session.removeAttribute("loginMessage");
 			session.setAttribute("authenticatedUser",username);
 		}
 		else{
