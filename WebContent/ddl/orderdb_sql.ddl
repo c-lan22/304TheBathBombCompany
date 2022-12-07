@@ -152,8 +152,6 @@ INSERT INTO category(categoryName) VALUES ('Seafood');
 INSERT INTO category(categoryName) VALUES ('Confections');
 INSERT INTO category(categoryName) VALUES ('Grains/Cereals');
 
---INSERT INTO review (reviewRating, reviewDate, customerId, productId, reviewComment) VALUES (2,'9999-12-31 23:59:59',--2,5,'lacked flavor')
-
 INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('My Last Bath Bomb - Toaster Bath Bomb', 1, '10 boxes x 20 bags',18.00);
 INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Massive Blue Balls Bath Bombs',1,'24 - 12 oz bottles',19.00);
 INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Margherita Bath Bombs',2,'12 - 550 ml bottles',10.00);
