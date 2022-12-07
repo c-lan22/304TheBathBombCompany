@@ -5,6 +5,7 @@
     <li><a href="listprod.jsp">List Products</a></li>
     <li><a href="showcart.jsp">Show Cart</a></li>
     <li><a href="checkout.jsp">Checkout</a></li>
+    <li><a href="oftheweek.jsp">Bath Bomb Of the Week</a></li>
     <% 
     String userName1 = (String) session.getAttribute("authenticatedUser");
     try{
