@@ -18,6 +18,7 @@
         }
     }catch(NullPointerException e){
         out.println("<li class=\"split\"><a href=\"login.jsp\">Login</a></li>");
+        out.println("<li class=\"split\"><a href=\"makeAccount.jsp\">Create Account</a></li>");
     }
     %>
     
