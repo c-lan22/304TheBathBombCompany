@@ -117,7 +117,7 @@ Statement stmt = con.createStatement(); )
         <p>Submit Product</p>
         <input type="submit" value="Delete">
         </form>
-
+		
         <%
         String prodId = request.getParameter("productId");
         
@@ -135,17 +135,7 @@ Statement stmt = con.createStatement(); )
                 out.println("<p>Please enter a valid Product Id</p>");
         }
         
-        //display inventory
-        out.println("<h1>Item inventory by store/warehouse</h1>");
-        out.print("<table border=\"1\"><tr><th>Item Number</th><th>Warehouse 1</th>");
-
-        String sql = "SELECT productid, quantity FROM productinventory ";
-        PreparedStatement pstmt = con.prepareStatement(sql);
-        ResultSet rst = pstmt.executeQuery();
-        while(rst.next()){
-                out.print("<tr><td>"+rst.getInt(1)+"</td>");
-                out.print("<td>"+rst.getInt(2)+"</td></tr>");	
-        }
+        
 } 
 catch (SQLException ex) {
         out.println(ex);
@@ -153,8 +143,53 @@ catch (SQLException ex) {
 out.println("</table>");
 
 %>
+<h2>Change Inventory</h2>
+<form method="post" action="admin.jsp">
+<p>Product Id</p>
+<input type="number" name="productIdInv" size="5">
+<p>Warehouse Id</p>
+<input type="number" name="warehouseId" size="5">
+<p>New Quantity</p>
+<input type="number" name="quantity" size="5">
+<p>Submit Inventory Change</p>
+<input type="submit" value="Submit">
+</form>
+<%
+//edit inventory
+String prodIdInv = request.getParameter("productIdInv");
+String warehouseId = request.getParameter("warehouseId");
+String quantity = request.getParameter("quantity");
+try 
+(Connection con=DriverManager.getConnection(url, uid, pw);
+Statement stmt = con.createStatement(); )
+{
+	if(!prodIdInv.equals(null)&&!quantity.equals(null)&&!warehouseId.equals(null)){	
+		String sql = "Update productinventory SET quantity = ? WHERE productid = ? AND warehouseId = ? ";
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, quantity);
+		pstmt.setString(2, prodIdInv);
+		pstmt.setString(3, warehouseId);
+		pstmt.executeUpdate();
+		out.print("<p>Updated product "+prodIdInv+" in warehouse "+warehouseId+" to "+quantity+" units</p>");
+	}
+	//display inventory
+	out.println("<h1>Item inventory by store/warehouse</h1>");
+	out.print("<table border=\"1\"><tr><th>Item Number</th><th>Warehouse 1</th>");
 
-
+	String sql = "SELECT productid, quantity FROM productinventory ";
+	PreparedStatement pstmt = con.prepareStatement(sql);
+	ResultSet rst = pstmt.executeQuery();
+	while(rst.next()){
+			out.print("<tr><td>"+rst.getInt(1)+"</td>");
+			out.print("<td>"+rst.getInt(2)+"</td></tr>");	
+	}
+} 
+catch (SQLException ex) {
+		out.println(ex);
+}
+catch (NullPointerException ex) {
+}
+%>
         </div>
 </body>
 </html>

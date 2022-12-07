@@ -53,15 +53,22 @@ Statement stmt = con.createStatement(); )
         //attempt to use image doesn't show
         //correct output and path can be acessed throu source code when inspecting page
         //out.println("<img src=\"displayImage.jsp?id=1"+"\">");
-       
-    
         out.println("<h2>"+productName+"</h2>");
-
+        
         out.println("<table><tbody><tr><th>ID </th><td>"+productId+"</td></tr><tr><th>Price</th><td>"+currFormat.format(productPrice)+"</td></tr></tbody>");
-
+        
         out.println("</table>");
-
+        
         out.println("<h3><a href=\"addcart.jsp?id=" + productId + "&name=" +productName+ "&price=" + productPrice + "\">Add to Cart</a></h3>");
+      
+        /* 
+        * the start of the reviews
+        */
+        out.print(" <h2>Add my Review:</h2> <textarea id=\"review\" name=\"review\" rows=\"4\" cols=\"50\"> </textarea> ");
+       
+       
+       
+       
         out.println("<h3><a href=\"listprod.jsp?id= \">Continue Shopping</a></h3>");
 
     }
