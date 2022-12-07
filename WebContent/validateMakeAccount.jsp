@@ -8,8 +8,10 @@
 	{
 		authenticatedUser = validateMakeAccount(out,request,session);
 	}
-	catch(IOException e)
-	{	System.err.println(e); }
+	catch(Exception e)
+	{	
+		System.err.println(e);
+	}
 
 	if(authenticatedUser != null)
 		response.sendRedirect("index.jsp");		// Successful login
@@ -33,16 +35,8 @@
 		String postalcode = request.getParameter("postalcode");
 		String country = request.getParameter("country");
 
-		boolean makeAcc = true;
-
+		boolean userAlreadyExists = false;
 		String retStr = null;
-		boolean isAccount = false;
-
-		if(username == null || password == null || firstname == null || lastname == null ||email == null || phonenumber == null || address == null ||city == null || state == null ||postalcode == null || country == null) //change to eunsure everything is filled in
-				return null;
-		if((username.length() == 0) || (password.length() == 0))
-				return null;
-
 		String url = "jdbc:sqlserver://cosc304_sqlserver:1433;DatabaseName=orders;TrustServerCertificate=True";
 		String uid = "sa";
 		String pw = "304#sa#pw";
@@ -51,58 +45,78 @@
 		(Connection con=DriverManager.getConnection(url, uid, pw);
 		Statement stmt = con.createStatement(); )
 		{
-			
-			// TODO: Check if userId and password match some customer account. If so, set retStr to be the username.
-			String tempUser = "";
-			String tempPassword = "";
-			String sql = "SELECT userid, password FROM customer";
-			PreparedStatement pstmt = con.prepareStatement(sql);
-			//pstmt.setString(1, username);
-			//pstmt.setString(2, password);
-			ResultSet rst = pstmt.executeQuery();
-			while(rst.next()){
-				tempUser = rst.getString(1);
-				tempPassword = rst.getString(2);
-				if(tempUser.equals(username) && tempPassword.equals(password)){
-					retStr = null;
-					makeAcc = false;
+			try
+			{
+				if(!firstname.equals("") && !lastname.equals("") && !email.equals("") && !phonenumber.equals("") && !address.equals("") && !city.equals("") && !state.equals("") && !postalcode.equals("") && !country.equals("")) //change to eunsure everything is filled in
+				{
+					if(username.length() != 0 && password.length() != 0)
+					{
+						// TODO: Check if userId and password match some customer account. If so, set retStr to be the username.
+						String tempUser = "";
+						String tempPassword = "";
+						String sql = "SELECT userid, password FROM customer";
+						PreparedStatement pstmt = con.prepareStatement(sql);
+						//pstmt.setString(1, username);
+						//pstmt.setString(2, password);
+						ResultSet rst = pstmt.executeQuery();
+						while(rst.next()){
+							tempUser = rst.getString(1);
+							tempPassword = rst.getString(2);
+							if(tempUser.equals(username) && tempPassword.equals(password)){
+								userAlreadyExists = true;
+							}
+						}
+
+					
+						String sql2 = "INSERT INTO customer VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+						PreparedStatement pstmt2 = con.prepareStatement(sql2);
+						pstmt2.setString(1, firstname);
+						pstmt2.setString(2, lastname);
+						pstmt2.setString(3, email);
+						pstmt2.setString(4, phonenumber);
+						pstmt2.setString(5, address);
+						pstmt2.setString(6, city);
+						pstmt2.setString(7, state);
+						pstmt2.setString(8, postalcode);
+						pstmt2.setString(9, country);
+						pstmt2.setString(10, username);
+						pstmt2.setString(11, password);
+
+						pstmt2.executeUpdate();
+
+						retStr = username;
+					}
+					else
+					{
+						session.setAttribute("loginMessage","Please fill in all the input fields.");
+						return null;
+					}
+				}
+				else
+				{
+					session.setAttribute("loginMessage","Please fill in all the input fields.");
+					return null;
 				}
 			}
-
-			if(makeAcc == true){
-				String sql2 = "INSERT INTO customer VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-				PreparedStatement pstmt2 = con.prepareStatement(sql2);
-				pstmt.setString(1, firstname);
-				pstmt.setString(2, lastname);
-				pstmt.setString(3, email);
-				pstmt.setString(4, phonenumber);
-				pstmt.setString(5, address);
-				pstmt.setString(6, city);
-				pstmt.setString(7, state);
-				pstmt.setString(8, postalcode);
-				pstmt.setString(9, country);
-				pstmt.setString(10, username);
-				pstmt.setString(11, password);
-
-				pstmt.executeUpdate();
-
-				retStr = username;
-
+			catch(Exception e){
+				session.setAttribute("loginMessage","Please fill in all the input fields.");
+				return null;
 			}
-
-				
-			rst.close();
 		} 
 		catch (SQLException ex) {
-			out.println(ex);
+			session.setAttribute("loginMessage",ex);
+			retStr = null;
 		}
-		
-		if(retStr != null)
-		{	session.removeAttribute("loginMessage");
+
+		if(!userAlreadyExists)
+		{	
+			session.removeAttribute("loginMessage");
 			session.setAttribute("authenticatedUser",username);
 		}
-		else{
+		else
+		{
             session.setAttribute("loginMessage","There is an account with that username already.");
+			retStr = null;
         }
         return retStr;
 	}
