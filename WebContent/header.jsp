@@ -10,6 +10,7 @@
     try{
         if(userName1.equals(null)){
             out.println("<li class=\"split\"><a href=\"login.jsp\">Login</a></li>");
+            out.println("<li class=\"split\"><a href=\"makeAccount.jsp\">Make Account</a></li>");
         }else{
             out.println("<li class=\"split\"><a href=\"logout.jsp\">Logout</a></li>");
             out.println("<li class=\"split\"><a href=\"customer.jsp\">Account Info</a></li>");
@@ -18,6 +19,7 @@
         }
     }catch(NullPointerException e){
         out.println("<li class=\"split\"><a href=\"login.jsp\">Login</a></li>");
+        out.println("<li class=\"split\"><a href=\"makeAccount.jsp\">Make Account</a></li>");
     }
     %>
     
