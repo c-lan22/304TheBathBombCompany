@@ -107,18 +107,38 @@ Statement stmt = con.createStatement(); )
                         pstmt3.execute();
                 }
         }
-} 
-catch (SQLException ex) {
-        out.println(ex);
-}
 
-//display inventory
-out.println("<h1>Item inventory by store/warehouse</h1>");
-out.print("<table border=\"1\"><tr><th>Item Number</th><th>Warehouse 1</th>");
-try 
-(Connection con=DriverManager.getConnection(url, uid, pw);
-Statement stmt = con.createStatement(); )
-{
+        %>
+
+        <h2>Delete Product by Id</h2>
+        <form method="get" action="admin.jsp">
+        <p>Product Id</p>
+        <input type="text" name="productId" size="25">
+        <p>Submit Product</p>
+        <input type="submit" value="Delete">
+        </form>
+
+        <%
+        String prodId = request.getParameter("productId");
+        
+        try
+        {
+                int id = Integer.parseInt(prodId);
+                String sql4 = "DELETE FROM product WHERE productId = ?";
+                PreparedStatement pstmt4 = con.prepareStatement(sql4);
+                pstmt4.setInt(1, id);
+                pstmt4.execute();
+                out.println("<p>Product Successfully Deleted</p>");
+        }
+        catch(Exception e)
+        {
+                out.println("<p>Please enter a valid Product Id</p>");
+        }
+        
+        //display inventory
+        out.println("<h1>Item inventory by store/warehouse</h1>");
+        out.print("<table border=\"1\"><tr><th>Item Number</th><th>Warehouse 1</th>");
+
         String sql = "SELECT productid, quantity FROM productinventory ";
         PreparedStatement pstmt = con.prepareStatement(sql);
         ResultSet rst = pstmt.executeQuery();
@@ -126,17 +146,15 @@ Statement stmt = con.createStatement(); )
                 out.print("<tr><td>"+rst.getInt(1)+"</td>");
                 out.print("<td>"+rst.getInt(2)+"</td></tr>");	
         }
-                
-        rst.close();
 } 
 catch (SQLException ex) {
         out.println(ex);
 }
 out.println("</table>");
 
-
-
 %>
+
+
         </div>
 </body>
 </html>
