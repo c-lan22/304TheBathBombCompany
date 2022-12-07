@@ -9,15 +9,21 @@
         <%@ include file = "header.jsp" %>
         <div class="maincontent" align="center">
 
-<img src="img/gif1.gif"  
+<h1 align="center">Welcome to the Bath Bomb Company</h1>
+
+<img src="img/gif2.gif"  
         width="120" 
         height="120" >
 
-<h1 align="center">Welcome to the Bath Bomb Company</h1>
+<%  
+String userName = (String) session.getAttribute("authenticatedUser");
 
-<h2 align="center"><a href="login.jsp">Login</a></h2>
+if(userName == null){
+        out.print("<h2 align=\"center\"><a href=\"login.jsp\">Login</a></h2>");
+        out.print("<h2 align=\"center\"><a href=\"makeAccount.jsp\">Make Account</a></h2>");
+}
+%>
 
-<h2 align="center"><a href="makeAccount.jsp">Make Account</a></h2>
 
 <h2 align="center"><a href="oftheweek.jsp">Bath Bomb of The Week!</a></h2>
 
@@ -29,7 +35,11 @@
 
 <h2 align="center"><a href="admin.jsp">Administrators</a></h2>
 
-<h2 align="center"><a href="logout.jsp">Log out</a></h2>
+
+<%if(userName != null){
+        out.print("<h2 align=\"center\"><a href=\"logout.jsp\">Log out</a></h2>");
+}  
+%>
 
 <img src="img/gif2.gif"  
         width="120" 
@@ -37,8 +47,7 @@
 
 <%
 // TODO: Display user name that is logged in (or nothing if not logged in)
-	
-        String userName = (String) session.getAttribute("authenticatedUser");
+
         if(userName == null)
                 out.print("<h3></h3>"); 
         else
