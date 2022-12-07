@@ -51,70 +51,67 @@ Statement stmt = con.createStatement(); )
         
         <h2>Add New Product</h2>
         <form method="get" action="admin.jsp">
-        <p>Product Id</p>
-        <input type="number" name="productId" size="25">
         <p>Product Name</p>
         <input type="text" name="productName" size="25">
         <p>Product Price</p>
-        <input type="number" name="productPrice" size="25">
+        <input type="text" name="productPrice" size="25">
         <p>Submit Product</p>
         <input type="submit" value="Submit">
         </form>
         
         <%
-        String prodId = request.getParameter("productId");
+
         String prodName = request.getParameter("productName");
         String prodPrice = request.getParameter("productPrice");
-        out.println("<h2>" +prodId +" " +prodName +" " +prodPrice +"</h2>");
-
+        boolean allowInsert = true;
+        double price = 0;
         
+        try
+        {
+                if(prodName.length() > 40)
+                {
+                        allowInsert = false;
+                        out.println("<p>Error. Product Name cannot be greater than 40 characters</p>");
+                }
+
+                try
+                {
+                        price = (double)Math.round(Double.parseDouble(prodPrice) * 100) / 100;
+                       
+                        if(price <= 0)
+                        {
+                                allowInsert = false;
+                                out.println("<p>Error. Product Price must be more than 0</p>");
+                        }
+                }
+                catch(Exception e)
+                {
+                        allowInsert = false;
+                        out.println("<p>Error. Product Price must be a number</p>");
+                }
+        }
+        catch(Exception e)
+        {
+                allowInsert = false;
+                out.println("<p>Please fill out all input fields before you submit</p>");
+        }
+        finally
+        {
+                if(allowInsert)
+                {
+                        out.println("<p>Product Successfully Added</p>");
+                        String sql3 = "INSERT INTO product (productName, productPrice) VALUES (?, ?)";
+                        PreparedStatement pstmt3 = con.prepareStatement(sql3);
+                        pstmt3.setString(1, prodName);
+                        pstmt3.setString(2, prodPrice);
+                        pstmt3.execute();
+                }
+        }
 } 
 catch (SQLException ex) {
         out.println(ex);
 }
-%>
-<h2>Change Inventory</h2>
-<form method="post" action="admin.jsp">
-<p>Product Id</p>
-<input type="number" name="productIdInv" size="5">
-<p>Warehouse Id</p>
-<input type="number" name="warehouseId" size="5">
-<p>New Quantity</p>
-<input type="number" name="quantity" size="5">
-<p>Submit Inventory Change</p>
-<input type="submit" value="Submit">
-</form>
-<%
-//edit inventory
-String prodIdInv = request.getParameter("productIdInv");
-String warehouseId = request.getParameter("warehouseId");
-String quantity = request.getParameter("quantity");
 
-try 
-(Connection con=DriverManager.getConnection(url, uid, pw);
-Statement stmt = con.createStatement(); )
-{
-	if(!prodIdInv.equals(null)&&!quantity.equals(null)&&!warehouseId.equals(null)){	
-		String sql = "Update productinventory SET quantity = ? WHERE productid = ? AND warehouseId = ? ";
-		PreparedStatement pstmt = con.prepareStatement(sql);
-		pstmt.setString(1, quantity);
-		pstmt.setString(2, prodIdInv);
-		pstmt.setString(3, warehouseId);
-		pstmt.executeUpdate();
-		out.print("<p>Updated product "+prodIdInv+" in warehouse "+warehouseId+" to "+quantity+" units</p>");
-	}
-
-} 
-catch (SQLException ex) {
-		out.println(ex);
-}
-catch (NullPointerException ex) {
-
-}
-
-
-%>
-<%
 //display inventory
 out.println("<h1>Item inventory by store/warehouse</h1>");
 out.print("<table border=\"1\"><tr><th>Item Number</th><th>Warehouse 1</th>");
@@ -130,16 +127,16 @@ Statement stmt = con.createStatement(); )
                 out.print("<td>"+rst.getInt(2)+"</td></tr>");	
         }
                 
-        
+        rst.close();
 } 
 catch (SQLException ex) {
         out.println(ex);
 }
 out.println("</table>");
 
+
+
 %>
-
-
         </div>
 </body>
 </html>
