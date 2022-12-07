@@ -8,6 +8,11 @@
         <%@ include file = "headerstyle.html" %>
         <%@ include file = "header.jsp" %>
         <div class="maincontent" align="center">
+
+<img src="img/gif1.gif"  
+        width="120" 
+        height="120" >
+
 <h1 align="center">Welcome to the Bath Bomb Company</h1>
 
 <h2 align="center"><a href="login.jsp">Login</a></h2>
@@ -25,6 +30,10 @@
 <h2 align="center"><a href="admin.jsp">Administrators</a></h2>
 
 <h2 align="center"><a href="logout.jsp">Log out</a></h2>
+
+<img src="img/gif2.gif"  
+        width="120" 
+        height="120" >
 
 <%
 // TODO: Display user name that is logged in (or nothing if not logged in)
