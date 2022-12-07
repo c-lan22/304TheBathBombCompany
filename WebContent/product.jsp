@@ -99,15 +99,15 @@ Statement stmt = con.createStatement(); )
         pstmt43.setString(1, productId);
         ResultSet rst43 = pstmt43.executeQuery();
         out.print("<h2>Reviews By Customers:</h2>");
-        if(rst43.next()){
-            String reviewId     = rst43.getString(4);
-            String reviewRating = rst43.getString(4);
-            String reviewDate   = rst43.getString(4);
+        while(rst43.next()){
+            String reviewId     = rst43.getString(1);
+            String reviewRating = rst43.getString(2);
+            String reviewDate   = rst43.getString(3);
             String customerId   = rst43.getString(4);
-            String productId23    = rst43.getString(4);
-            String reviewComment1 = rst43.getString(4);
-            
-            out.print("<h3>Customer Id:"+customerId+" Date:"+reviewDate+" Review Rating:"+reviewRating+"</h3>");
+            String productId23    = rst43.getString(5);
+            String reviewComment1 = rst43.getString(6);
+            //Date:"+reviewDate+"
+            out.print("<h3>Customer Id: "+customerId+" Review Rating: "+reviewRating+"</h3>");
             out.print("<textarea readonly rows=\"4\" cols=\"50\">"+reviewComment1+"</textarea>");
             
         }  

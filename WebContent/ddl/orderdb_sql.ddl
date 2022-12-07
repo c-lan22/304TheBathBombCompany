@@ -137,10 +137,7 @@ CREATE TABLE review (
     productId           INT,
     reviewComment       VARCHAR(1000),          
     PRIMARY KEY (reviewId),
-    FOREIGN KEY (customerId) REFERENCES customer(customerId)
-        ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (productId) REFERENCES product(productId)
-        ON UPDATE CASCADE ON DELETE CASCADE
+
 );
 
 INSERT INTO category(categoryName) VALUES ('Beverages');
@@ -152,7 +149,11 @@ INSERT INTO category(categoryName) VALUES ('Seafood');
 INSERT INTO category(categoryName) VALUES ('Confections');
 INSERT INTO category(categoryName) VALUES ('Grains/Cereals');
 
---INSERT INTO review (reviewRating, customerId, productId, reviewComment) VALUES (3,2,5,'wasnt tasty enough');
+INSERT INTO review (reviewRating, customerId, productId, reviewComment) VALUES (3,2,5,'wasnt tasty enough');
+INSERT INTO review (reviewRating, customerId, productId, reviewComment) VALUES (3,1,5,'reminds me of the 70s');
+INSERT INTO review (reviewRating, customerId, productId, reviewComment) VALUES (1,3,1,'lacked flavor');
+INSERT INTO review (reviewRating, customerId, productId, reviewComment) VALUES (1,2,1,'missing plug do not buy');
+INSERT INTO review (reviewRating, customerId, productId, reviewComment) VALUES (1,3,2,'lacked flavor');
 
 
 INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('My Last Bath Bomb - Toaster Bath Bomb', 1, '10 boxes x 20 bags',18.00);
