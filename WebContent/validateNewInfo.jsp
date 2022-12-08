@@ -1,7 +1,6 @@
 <%@ page language="java" import="java.io.*,java.sql.*"%>
 <%@ include file="jdbc.jsp" %>
 <%
-	//String authenticatedUser = null;
 	session = request.getSession(true);
 
 	String itWorks = null;
@@ -27,7 +26,7 @@
 	{
         String username = (String) session.getAttribute("authenticatedUser");
 		String password = request.getParameter("password");
-		String firstname = request.getParameter("firstname");
+		String firstname = request.getParameter("firstName");
 		String lastname = request.getParameter("lastname");
 		String email = request.getParameter("email");
 		String phonenumber = request.getParameter("phonenum");
@@ -66,8 +65,8 @@
 						pstmt2.setString(7, state);
 						pstmt2.setString(8, postalcode);
 						pstmt2.setString(9, country);
-						pstmt2.setString(11, username);
 						pstmt2.setString(10, password);
+						pstmt2.setString(11, username);
 
 						pstmt2.executeUpdate();
 
