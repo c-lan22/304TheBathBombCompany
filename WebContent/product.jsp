@@ -66,8 +66,11 @@ Statement stmt = con.createStatement(); )
         */
   
     }
+    /* 
+     * Query to get customer id
+     */
     
-    
+
     
     /* 
     * Add the review
@@ -76,14 +79,14 @@ Statement stmt = con.createStatement(); )
     try {
     String reviewComment = request.getParameter("reviewComment");
     int rating = Integer.parseInt(request.getParameter("rating"));
-        if(reviewComment.equals(null)){
-            String sql2 = "INSERT INTO review (reviewRating, reviewDate, customerId, productId, reviewComment) VALUES (?,?,?,?,?)";
+    int customerId = Integer.parseInt(request.getParameter("custId"));
+        if(!reviewComment.equals(null)){
+            String sql2 = "INSERT INTO review (reviewRating,customerId, productId, reviewComment) VALUES (?,?,?,?)";
             PreparedStatement pstmt2 = con.prepareStatement(sql2);
             pstmt2.setInt(1, rating);
-            pstmt2.setString(2, null); //needs
-            pstmt2.setInt(3, 1);    //needs
-            pstmt2.setString(4, productId);
-            pstmt2.setString(5, reviewComment);
+            pstmt2.setInt(2, customerId);    //needs
+            pstmt2.setString(3, productId);
+            pstmt2.setString(4, reviewComment);
             pstmt2.executeUpdate();
             out.print("<p>created review </p>");
         }
@@ -121,6 +124,7 @@ Statement stmt = con.createStatement(); )
     +"<p>Rating</p><input type=\"number\" name=\"rating\" size=\"1\" min=\"1\" max=\"5\">"
     +"<p>Comment</p><textarea id=\"review\" name=\"reviewComment\" rows=\"4\" cols=\"50\"> </textarea>" 
     +"<input hidden type=\"number\" name=\"id\"value=\""+productId+"\">"
+    +"<p>Add Customer Id</p><input type=\"number\" name=\"custId\" size=\"1\">"
     +"<p>Submit Review</p><p><input type=\"submit\" value=\"Submit\"></p>"
     +"</form");
     
